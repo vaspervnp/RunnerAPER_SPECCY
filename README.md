@@ -10,7 +10,8 @@ from the ramps and watch out for the signals, from the city avenue all the way t
 
 > **Status**: complete game (milestones of [planzx.md](planzx.md), in Greek). 25 fps with no torn line at any
 > speed (EASY to HARD and TURBO), on 48K and 128K; in the busiest stretches a game frame can still run long and
-> take a TV frame more (about 1% of frames on HARD, 10% with TURBO): a stutter, never a tear.
+> take a TV frame more (about 4 TV frames in 1000 on HARD, 17 with TURBO; 30 with TURBO on a 128K): a
+> stutter, never a tear.
 
 **Player's manual:** [English](docs/manual_en.md) ([PDF](docs/manual_en.pdf)) ·
 [Ελληνικά](docs/manual_el.md) ([PDF](docs/manual_el.pdf))

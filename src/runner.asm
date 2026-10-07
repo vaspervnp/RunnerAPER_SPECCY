@@ -68,7 +68,8 @@ main_loop:
                 call world_early
                 call beam_sync
                 jr .blit
-.late:          call beam_sync_late         ; not into a picture being drawn
+.late:          call world_late           ; the time left before the picture
+                call beam_sync_late         ; not into a picture being drawn
 .blit:          call blit
 after_blit:
 ;; After it, the game frame.
@@ -147,6 +148,9 @@ world_jobs:
                 call next_job
                 ld c,a
                 call job_bound
+                push bc
+                call post_account           ; (it runs whatever the time)
+                pop bc
                 ld a,b
                 ld (last_bound),a
                 ld a,c
@@ -175,13 +179,53 @@ world_jobs:
                 ld a,c
                 call run_job
                 jr .extra
-.stop:          ret
-.idle:          ld a,(prewarmed)            ; nothing left: once a frame
+.stop:          jp late_mark
+.idle:          call late_mark              ; past the interrupt: no more
+                ret nc
+                ld a,(prewarmed)            ; nothing left: once a frame
                 or a
                 ret nz
                 inc a
                 ld (prewarmed),a
                 jp chunk_prewarm
+
+;; post_account - B = the bound of a job about to run: if the interrupt has
+;; passed, added to post_spent (from the bound of the job it came in, the
+;; first time), saturating at #FE.
+post_account:
+                ld a,(frame_count)
+                ld hl,frame_last
+                sub (hl)
+                cp 2
+                ret c
+                ld a,(post_spent)
+                cp #FF
+                jr nz,.spent
+                ld a,(last_bound)
+.spent:         add a,b
+                jr nc,.keep
+                ld a,#FE
+.keep:          ld (post_spent),a
+                ret
+
+;; late_mark - at world_jobs' end: late_spent = the most the time past the
+;; interrupt can be (/256), for world_late if the next frame starts late;
+;; 1 if the interrupt has not come yet (the loop back to wait_game_frame).
+;; Returns C if it has not come.
+late_mark:
+                ld a,(frame_count)
+                ld hl,frame_last
+                sub (hl)
+                cp 2
+                ld a,1
+                jr c,.set
+                ld a,(post_spent)
+                cp #FF
+                jr nz,.past
+                ld a,(last_bound)
+.past:          or a                        ; (NC)
+.set:           ld (late_spent),a
+                ret
 
 ;; next_job - A = the next job towards drawing row drawn_row + 1.
 next_job:
@@ -263,18 +307,23 @@ job_bound:
                 cp JOB_GEN_TRACK
                 jr c,.table
                 jr nz,.draw
-                ld b,11600/256              ; the track: a power-up to place
-                ld hl,(pu_gap)              ; is dear; so is the chunk picked
-                ld a,h                      ; at one's end; in a chunk, a
-                or l                        ; spacer or a bridge, cheap
-                ret z
-                ld a,(chunk_left)
-                ld hl,spacer_left
+                ld b,4000/256               ; the track: in a chunk, a spacer
+                ld a,(chunk_left)           ; or a bridge, cheap; the chunk
+                ld hl,spacer_left           ; picked at one's end is dear; so
+                or (hl)                     ; is a power-up to place; both,
+                ld hl,bridge_left           ; dearer still
                 or (hl)
-                ld hl,bridge_left
-                or (hl)
+                jr nz,.in_chunk
+                ld b,12000/256
+.in_chunk:      ld hl,(pu_gap)
+                ld a,h
+                or l
+                ret nz
+                ld a,b
+                cp 4000/256
+                ld b,12000/256
                 ret z
-                ld b,4000/256
+                ld b,16800/256
                 ret
 .draw:          push bc                     ; drawing: the row's descriptor
                 ld hl,(drawn_row)
@@ -287,7 +336,7 @@ job_bound:
                 bit 7,(hl)                  ; tiles, first half: a bridge does
                 ld b,4700/256               ; all of it
                 ret z
-                ld b,7200/256
+                ld b,7700/256
                 ret
 .not_top:       dec a
                 jr nz,.not_bottom
@@ -295,13 +344,12 @@ job_bound:
                 call add_a_hl
                 ld a,(hl)
                 or a
-                ld b,4000/256
+                ld b,5100/256
                 ret z
-                ld b,8700/256
+                ld b,9500/256
                 ret
 .not_bottom:    dec a
-                ld b,6500/256               ; a slice
-                ret z
+                jr z,.slice
                 push bc                     ; ring_done: slot 0's shadow
                 ld hl,(drawn_row)
                 inc hl
@@ -312,8 +360,42 @@ job_bound:
                 ret nz
                 ld b,4900/256
                 ret
-.table:         ld b,8200/256               ; the sides
+.table:         ld b,2300/256               ; the sides: between city and
+                ld a,(trans_left)           ; forest, little; the city's
+                or a                        ; cheaper than the forest's
+                ret nz
+                ld b,6800/256
+                ld a,(env)
+                or a
+                ret z
+                ld b,8200/256
                 ret
+.slice:         ld hl,(ov_next)             ; the overlay ov_find found:
+                ld a,OV_WIDTH               ; by its width, and if it spans
+                call add_a_hl               ; column 8 (line by line)
+                ld a,(hl)
+                add a,a
+                add a,a                     ; 1024 T a byte of width
+                add a,SLICE_BASE
+                ld b,a
+                dec hl
+                dec hl
+                dec hl                      ; OV_COLUMN
+                ld a,(hl)
+                cp RING_SPLIT
+                ret nc
+                inc hl
+                inc hl
+                inc hl
+                add a,(hl)
+                cp RING_SPLIT+1
+                ret c
+                ld a,b
+                add a,SLICE_SPLIT
+                ld b,a
+                ret
+SLICE_BASE      equ 4000/256                ; + the rest of the list looked at
+SLICE_SPLIT     equ 1500/256
 
 ;; world_early - at the start of a game frame (T 0, wait_game_frame halted):
 ;; jobs up to the beam's picture, by their bounds.
@@ -334,6 +416,21 @@ world_early:
                 call run_job
                 jr .job
 EARLY_BUDGET    equ 13000/256               ; T 0 to the picture, less a margin
+
+;; world_late - a game frame begun late (wait_game_frame did not halt): what
+;; is left of world_early's budget after the time world_jobs may have run
+;; past the interrupt (late_spent), less the way back here. Unknown (#FF,
+;; world_jobs not run): nothing.
+world_late:
+                ld hl,late_spent
+                ld a,EARLY_BUDGET-LATE_MARGIN
+                sub (hl)
+                ld (hl),#FF
+                ret c
+                ret z
+                ld (early_left),a
+                jr world_early.job
+LATE_MARGIN     equ 2                       ; 512 T: the main loop's way round
 
 ;; row_slot - HL = world row, no lower than the top: A = its slot (a slot back
 ;; for every row above the top). Keeps HL. Destroys BC, DE.
@@ -358,7 +455,8 @@ gen_phase:      defb 0                      ; 1: gen_upto + 1 has its sides
 prewarmed:      defb 0                      ; chunk_prewarm done, nothing since
 last_bound:     defb 0                      ; the bound of the job last started
 post_spent:     defb 0                      ; bounds since the interrupt, #FF
-early_left:     defb 0                      ; world_early's budget left
+early_left:     defb 0
+late_spent:     defb #FF                    ; late_mark; #FF: not known                      ; world_early's budget left
 
 ;; ---------------------------------------------------------------------------
 ;; new_run - a fresh world (rows 0 .. PICTURE_ROWS drawn into the ring, the

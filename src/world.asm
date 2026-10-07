@@ -933,7 +933,7 @@ render_part:
                 jr z,.bottom
                 dec a
                 jr z,.slices
-                xor a                       ; done
+.done:          xor a                       ; done
                 ld (draw_phase),a
                 ld a,(rr_slot)
                 call ring_done
@@ -943,17 +943,21 @@ render_part:
                 ld a,1
                 bit 7,(ix+D_FLAGS)          ; a bridge: whole already
                 jr z,.phase_set
-.to_slices:     ld hl,OVERLAY_LIST
-                ld (ov_next),hl
+.to_slices:     ld iy,OVERLAY_LIST          ; the first slice, if any, known
+                call ov_find                ; (job_bound looks at it)
+                ld (ov_next),iy
                 ld a,2
+                jr nz,.phase_set
+                inc a                       ; none: ring_done next
 .phase_set:     ld (draw_phase),a
                 or a
                 ret
 .bottom:        call render_tiles_bottom
                 jr .to_slices
 .slices:        call draw_overlays_step
-                ret nz                      ; (NC)
-                ld a,3
+                ret nz                      ; (NC) more to come
+                jr nc,.done                 ; none: ring_done now
+                ld a,3                      ; the last: ring_done next
                 jr .phase_set
 
 ; HL = world row, A = slot: rr_*, IX = its descriptor.
@@ -1251,28 +1255,73 @@ draw_overlays:
                 jr nz,.step
                 ret
 
-; draw_overlays_step: from overlay ov_next on, up to the first slice drawn;
-; NZ if there may be more, Z when the list is done. IX = the descriptor.
+; draw_overlays_step: the overlay at ov_next on (ov_find) drawn, then the
+; next one found, so that a row's last slice ends its slices too:
+;   NZ, NC - drawn, another to come (ov_next)
+;   Z, C   - drawn, the last
+;   Z, NC  - none at all
+; IX = the descriptor.
 OVERLAY_END     equ OVERLAY_LIST+OVERLAYS*OV_SIZE
 draw_overlays_step:
                 ld iy,(ov_next)
-                ld de,OV_SIZE
-.slot:          ld a,iyl                    ; the end?
-                cp OVERLAY_END & #FF
-                jr nz,.in
-                ld a,iyh
-                cp OVERLAY_END>>8
-                ret z
-.in:            ld a,(iy+OV_ROWS)
+                call ov_find
+                ret z                       ; (NC)
+                call draw_overlay_slice
+                set 6,(ix+D_FLAGS)
+                ld a,(draw_overlays.above)
                 or a
-                jr z,.next
+                call z,.free_it             ; its top row: free the slot
+                ld de,OV_SIZE
+                add iy,de
+                call ov_find
+                ld (ov_next),iy
+                scf
+                ret z                       ; the last
+                ccf
+                ret                         ; (NZ, NC)
+.free_it:       ld (iy+OV_ROWS),0
+                ld a,(scenery_width)
+                sub (iy+OV_WIDTH)
+                ld (scenery_width),a
+                ret
+
+; ov_find: from overlay IY on, the first with a slice in row rr_row: NZ, IY
+; at it, draw_overlays.above = its rows above this one; Z if none. Frees
+; those wholly below the row on the way. Destroys AF, BC, DE, HL.
+ov_find:
+                push iy
+                pop hl
+                ld a,OVERLAY_END & #FF      ; B = slots left (the list is
+                sub l                       ; under 256 bytes)
+                jr z,.end
+                rrca
+                rrca
+                rrca
+                ld b,a
+                inc hl
+                inc hl                      ; HL at OV_ROWS
+                ld de,OV_SIZE
+.slot:          ld a,(hl)                   ; free slots: 42 T each
+                or a
+                jr nz,.in
+.next:          add hl,de
+                djnz .slot
+.end:           ld iy,OVERLAY_END
+                xor a                       ; (Z)
+                ret
+.in:            push hl
+                push bc
+                push hl
+                pop iy
+                dec iy
+                dec iy
                 ; top = bottom + rows - 1; slice if bottom <= row <= top
                 ld hl,(rr_row)
                 ld c,(iy+OV_BOTTOM)
                 ld b,(iy+OV_BOTTOM+1)
                 or a
                 sbc hl,bc                   ; HL = row - bottom
-                jr c,.next
+                jr c,.skip
                 ld a,h
                 or a
                 jr nz,.free
@@ -1285,24 +1334,14 @@ draw_overlays_step:
                 dec a
                 sub b
                 ld (draw_overlays.above),a
-                call draw_overlay_slice
-                set 6,(ix+D_FLAGS)
-                ld a,(draw_overlays.above)
-                or a
-                call z,.free_it             ; its top row: free the slot
-                ld de,OV_SIZE               ; one drawn: on from the next
-                add iy,de                   ; another time
-                ld (ov_next),iy
-                or 1
+                pop bc
+                pop hl
+                or 1                        ; (NZ)
                 ret
-.free:          call .free_it
-.next:          add iy,de
-                jr .slot
-.free_it:       ld (iy+OV_ROWS),0
-                ld a,(scenery_width)
-                sub (iy+OV_WIDTH)
-                ld (scenery_width),a
-                ret
+.free:          call draw_overlays_step.free_it
+.skip:          pop bc
+                pop hl
+                jr .next
 draw_overlays.above:
                 defb 0
 ov_next:        defw 0                      ; the next overlay to look at
