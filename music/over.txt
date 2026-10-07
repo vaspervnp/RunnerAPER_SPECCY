@@ -1,0 +1,6 @@
+# Game over jingle: once. Original.
+# tune: over
+# quarter: 12
+# loop: no
+A: A5/8 G#5/8 F5/8 E5/8 D5/8 C#5/8 Bb4/8 C#5/8 | A4/2. r/4
+B: A2/4 D3/4 Bb2/4 E3/4 | A2/2. r/4

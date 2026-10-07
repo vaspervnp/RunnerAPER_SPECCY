@@ -1,0 +1,8 @@
+# Game tune: fast, A hijaz (A Bb C# D E F G#). Original.
+# tune: game
+# quarter: 16
+# loop: yes
+A: A4/8 Bb4/8 C#5/8 D5/8 E5/4 E5/4 | F5/8 E5/8 D5/8 C#5/8 D5/4 r/4 | E5/8 D5/8 C#5/8 Bb4/8 C#5/4 A4/4 | Bb4/8 A4/8 G#4/8 Bb4/8 A4/2
+A: A5/8 G#5/8 F5/8 E5/8 F5/4 E5/4 | D5/8 E5/8 F5/8 G#5/8 A5/4 r/4 | G#5/8 F5/8 E5/8 D5/8 C#5/8 D5/8 E5/8 C#5/8 | D5/8 C#5/8 Bb4/8 C#5/8 A4/2
+B: A2/4 E3/4 A2/4 E3/4 | D3/4 A2/4 D3/4 A2/4 | A2/4 E3/4 A2/4 E3/4 | Bb2/4 F3/4 A2/4 E3/4
+B: D3/4 A2/4 D3/4 A2/4 | E3/4 B2/4 E3/4 G#2/4 | A2/4 E3/4 A2/4 E3/4 | Bb2/4 F3/4 A2/4 E3/4

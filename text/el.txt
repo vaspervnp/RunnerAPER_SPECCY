@@ -1,0 +1,72 @@
+# Greek screen texts (tools/mktext.py -> src/data/text.asm). Same names as
+# text/en.txt. Capitals only; accents are ignored. Line: name: text
+menu_start: ΕΝΑΡΞΗ
+menu_controls: ΧΕΙΡΙΣΜΟΙ
+menu_scores: ΡΕΚΟΡ
+menu_skill_0: ΔΥΣΚΟΛΙΑ: ΕΥΚΟΛΟ
+menu_skill_1: ΔΥΣΚΟΛΙΑ: ΜΕΤΡΙΟ
+menu_skill_2: ΔΥΣΚΟΛΙΑ: ΔΥΣΚΟΛΟ
+menu_music_off: ΜΟΥΣΙΚΗ: ΟΧΙ
+menu_music_on: ΜΟΥΣΙΚΗ: ΝΑΙ
+menu_sound_off: ΗΧΟΣ: ΟΧΙ
+menu_sound_on: ΗΧΟΣ: ΝΑΙ
+menu_hint: Q A ΚΑΙ SPACE
+menu_lang: L : ENGLISH
+menu_credit: ATHENS PIRAEUS
+menu_credit2: ELECTRIC RAILWAYS
+menu_credit3: REVIVE8BIT-2026-VASPER
+controls_title: ΧΕΙΡΙΣΜΟΙ
+controls_left: O : ΑΡΙΣΤΕΡΑ
+controls_right: P : ΔΕΞΙΑ
+controls_jump: Q Η SPACE : ΑΛΜΑ
+controls_down: A : ΚΑΤΩ
+controls_pause: H : ΠΑΥΣΗ
+controls_esc: BREAK : ΜΕΝΟΥ
+controls_music: M : ΜΟΥΣΙΚΗ
+controls_joy: Η KEMPSTON / SINCLAIR
+controls_back: SPACE : ΠΙΣΩ
+scores_title: ΡΕΚΟΡ
+over_title: ΤΕΛΟΣ ΠΑΙΧΝΙΔΙΟΥ
+over_score: ΣΚΟΡ
+over_coins: ΝΟΜΙΣΜΑΤΑ
+over_dist: ΑΠΟΣΤΑΣΗ
+over_record: ΝΕΟ ΡΕΚΟΡ!
+over_name: ΟΝΟΜΑ:
+over_name_hint: Q A ΓΡΑΜΜΑ  SPACE ΟΚ
+over_continue: SPACE : ΣΥΝΕΧΕΙΑ
+pause: ΠΑΥΣΗ
+demo: DEMO
+pu_magnet: ΜΑΓΝΗΤΗΣ
+pu_turbo: ΤΟΥΡΜΠΟ
+pu_slow: ΑΡΓΑ
+pu_spring: ΥΠΕΡΑΛΜΑ
+pu_helmet: ΚΡΑΝΟΣ
+pu_ticket: 2X ΚΕΡΜΑΤΑ
+pu_wagons: ΠΗΔΑ ΑΝΑΜΕΣΑ ΣΤΑ ΒΑΓΟΝΙΑ
+pu_3: 3
+pu_2: 2
+pu_1: 1
+pu_go: ΠΑΜΕ!
+station_1: ΚΟΡΙΝΘΟΣ
+station_2: ΜΕΓΑΡΑ
+station_3: ΕΛΕΥΣΙΝΑ
+station_4: ΑΣΠΡΟΠΥΡΓΟΣ
+station_5: ΡΕΝΤΗΣ
+station_6: ΠΕΙΡΑΙΑΣ! 1000 ΠΟΝΤΟΙ
+menu_story: ΙΣΤΟΡΙΑ
+story_title: Ο ΤΕΛΕΥΤΑΙΟΣ ΣΟΥΒΛΑΤΖΗΣ
+story_1: 6:47 ΤΟ ΠΡΩΙ ΣΤΟ ΚΙΑΤΟ.
+story_2: Ο ΘΕΙΟΣ ΜΠΑΜΠΗΣ ΠΑΝΙΚΟΣ:
+story_3: Ο ΚΡΙΤΗΣ ΤΟΥ ΣΟΥΒΛΑΚΙΟΥ
+story_4: ΕΡΧΕΤΑΙ ΣΤΙΣ 12:00 ΚΑΙ
+story_5: ΤΟ ΜΠΑΧΑΡΙΚΟ ΕΙΝΑΙ ΕΔΩ!
+story_6:
+story_7: ΤΡΕΝΟ ΔΕΝ ΕΧΕΙ: ΚΑΤΣΙΚΑ
+story_8: ΣΤΗ ΓΡΑΜΜΗ. ΤΑΞΙ ΟΥΤΕ:
+story_9: Ο ΤΑΞΙΤΖΗΣ ΕΙΝΑΙ ΑΥΤΟΣ.
+story_10:
+story_11: ΠΗΔΑ ΤΑ ΣΤΟΠ. ΜΑΖΕΨΕ ΤΑ
+story_12: ΚΕΡΜΑΤΑ. Ο ΕΛΕΓΚΤΗΣ ΚΑΙ
+story_13: Η ΚΑΤΣΙΚΑ ΣΕ ΚΥΝΗΓΑΝΕ.
+story_14: ΧΩΡΙΣ ΜΠΑΧΑΡΙΚΟ: ΡΙΓΑΝΗ
+story_15: ΣΟΥΠΕΡ ΜΑΡΚΕΤ. ΤΡΕΞΕ!

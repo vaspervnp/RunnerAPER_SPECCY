@@ -1,0 +1,9 @@
+# Sound effects on AY channel C, one step per 1/50 s.
+# name prio: steps    step = note:volume | nNN:volume (noise only, period NN)
+#                     | note+nNN:volume (tone and noise) | r (silence)
+# A higher priority interrupts a lower one, never the other way round.
+coin 1: B5:13 E6:13 E6:11 E6:9 E6:6 E6:3
+jump 1: C4:12 E4:12 G4:11 C5:10 E5:8 G5:6
+signal 1: G6:12 G6:11 G6:10 G6:9 G6:7 E6:12 E6:11 E6:10 E6:9 E6:8 E6:6 E6:4
+powerup 2: A5:13 A5:13 C#6:13 C#6:13 E6:13 E6:13 A6:13 A6:12 A6:11 A6:10 A6:8 A6:6 A6:4
+crash 3: A2+n31:15 A2+n28:15 n24:14 n20:13 n18:12 n16:11 n14:10 n12:9 n12:8 n12:7 n12:6 n12:5 n12:4 n12:3 n12:2

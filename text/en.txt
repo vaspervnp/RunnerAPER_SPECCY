@@ -1,0 +1,72 @@
+# English screen texts (tools/mktext.py -> src/data/text.asm), the default
+# language. Same names as text/el.txt. Capitals only. Line: name: text
+menu_start: START
+menu_controls: CONTROLS
+menu_scores: HIGH SCORES
+menu_skill_0: DIFFICULTY: EASY
+menu_skill_1: DIFFICULTY: MEDIUM
+menu_skill_2: DIFFICULTY: HARD
+menu_music_off: MUSIC: OFF
+menu_music_on: MUSIC: ON
+menu_sound_off: SOUND: OFF
+menu_sound_on: SOUND: ON
+menu_hint: Q A AND SPACE
+menu_lang: L : ΕΛΛΗΝΙΚΑ
+menu_credit: ATHENS PIRAEUS
+menu_credit2: ELECTRIC RAILWAYS
+menu_credit3: REVIVE8BIT-2026-VASPER
+controls_title: CONTROLS
+controls_left: O : LEFT
+controls_right: P : RIGHT
+controls_jump: Q OR SPACE : JUMP
+controls_down: A : DOWN
+controls_pause: H : PAUSE
+controls_esc: BREAK : MENU
+controls_music: M : MUSIC ON/OFF
+controls_joy: OR KEMPSTON / SINCLAIR
+controls_back: SPACE : BACK
+scores_title: HIGH SCORES
+over_title: GAME OVER
+over_score: SCORE
+over_coins: COINS
+over_dist: DISTANCE
+over_record: NEW HIGH SCORE!
+over_name: NAME:
+over_name_hint: Q A LETTER  SPACE OK
+over_continue: SPACE : CONTINUE
+pause: PAUSE
+demo: DEMO
+pu_magnet: MAGNET
+pu_turbo: TURBO
+pu_slow: SLOW
+pu_spring: SUPER JUMP
+pu_helmet: HELMET
+pu_ticket: 2X COINS
+pu_wagons: JUMP BETWEEN WAGONS!
+pu_3: 3
+pu_2: 2
+pu_1: 1
+pu_go: GO!
+station_1: CORINTH
+station_2: MEGARA
+station_3: ELEFSINA
+station_4: ASPROPYRGOS
+station_5: RENTIS
+station_6: PIRAEUS! 1000 BONUS
+menu_story: STORY
+story_title: THE LAST SOUVLAKI MAN
+story_1: 6:47 AM IN KIATO.
+story_2: UNCLE BABIS PANICS: THE
+story_3: SOUVLAKI JUDGE COMES AT
+story_4: NOON - AND THE SECRET
+story_5: SPICE IS STILL IN KIATO!
+story_6:
+story_7: NO TRAIN: A GOAT ON THE
+story_8: LINE. NO TAXI: BABIS IS
+story_9: THE ONLY TAXI DRIVER.
+story_10:
+story_11: JUMP THE STOPS. GRAB THE
+story_12: COINS. THE INSPECTOR AND
+story_13: THE GOAT ARE AFTER YOU.
+story_14: NO SPICE? SUPERMARKET
+story_15: OREGANO. NEVER! RUN!

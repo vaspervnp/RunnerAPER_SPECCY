@@ -1,0 +1,8 @@
+# Menu tune: calm, D minor with a hijaz turn. Original.
+# tune: menu
+# quarter: 20
+# loop: yes
+A: D5/4 E5/8 F5/8 E5/4 D5/4 | C#5/4 D5/8 E5/8 A4/2 | Bb4/4 A4/8 G4/8 A4/4 Bb4/4 | C#5/4 Bb4/8 A4/8 A4/2
+A: F5/4 E5/8 D5/8 E5/4 F5/4 | G5/4 F5/8 E5/8 D5/2 | E5/8 F5/8 E5/8 D5/8 C#5/4 Bb4/4 | A4/4 C#5/4 D5/2
+B: D3/2 A2/2 | A2/2 E3/2 | G2/2 D3/2 | A2/2 E3/2
+B: D3/2 A2/2 | G2/2 D3/2 | A2/2 E3/2 | D3/2 A2/2

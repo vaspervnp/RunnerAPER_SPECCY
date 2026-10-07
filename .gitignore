@@ -1,0 +1,7 @@
+build/
+
+# Windows alternate data streams on downloaded files
+*:Zone.Identifier
+
+# Python bytecode from the tools
+__pycache__/
